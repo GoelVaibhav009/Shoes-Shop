@@ -11,11 +11,11 @@ const ProductSchema = new mongoose.Schema({
     required: true,
   },
   productMrp: {
-    type: Float32Array,
+    type: Number,
     required: true,
   },
   productSalePrice: {
-    type: Float32Array,
+    type: Number,
     required: true,
   },
   productCategory: {
@@ -27,7 +27,11 @@ const ProductSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  createdAt: {
+  productFavorite: {
+    type: Boolean,
+    default: false,
+  },
+  productCreatedAt: {
     type: Date,
     default: Date.now,
   },
