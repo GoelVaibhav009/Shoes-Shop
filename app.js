@@ -14,6 +14,10 @@ connectDB()
 // Make app
 const app = express()
 
+// Body parser
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+
 // Static folder
 app.use(express.static(path.join(__dirname, 'public'))) 
 
