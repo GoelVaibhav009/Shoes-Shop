@@ -11,6 +11,26 @@ router.get('/', function (req, res) {
 
 // @desc   Add Product Details
 // @route  Post /add
+router.post('/add', async (req, res) => {
+    try {
+    //   req.body.user = req.user.id //Validation for checking user is login or not
+      await Product.create(req.body)
+      res.redirect('/')
+    } catch (err) {
+      console.error(err)
+    }
+})
+
+module.exports = router
+
+
+
+
+
+/*
+Old method
+// @desc   Add Product Details
+// @route  Post /add
 router.post('/add',async (req,res) => {
     const addProduct = new Product({
         productTitle: req.body.productTitle,
@@ -31,4 +51,4 @@ router.post('/add',async (req,res) => {
      
 });
 
-module.exports = router
+*/
