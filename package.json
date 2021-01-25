@@ -9,6 +9,7 @@
   "author": "Vaibhav Goel",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "env": "^0.0.2",
     "express": "^4.17.1",
     "mongoose": "^5.11.13",
