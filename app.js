@@ -2,15 +2,21 @@ const dotenv = require('dotenv')
 const path = require('path')
 const express = require('express')
 const mongoose = require('mongoose')
+const passport = require('passport')
+const session = require('express-session')
+const MongoStore = require('connect-mongo') (session)
 
 const connectDB = require('./config/db')
 
 //Load config
 dotenv.config({ path: 'config/config.env'})
 
-// Connecting DB
-connectDB()
+//Passport Config
+require('./config/passport')(passport)
 
+// Connecting DB
+
+connectDB()
 // Make app
 const app = express()
 
@@ -18,12 +24,26 @@ const app = express()
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+//Sessions
+app.use(session({
+    secret: 'Hello',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection})
+}))
+
+//Passport middlewares
+app.use(passport.initialize())
+app.use(passport.session())
+
+
 // Static folder
 app.use(express.static(path.join(__dirname, 'public'))) 
 
 // Routes
 app.use('/', require('./routes/index'))
-app.use('/home', require('./routes/home'))
+app.use('/auth', require('./routes/auth'))
+app.use('/dashboard', require('./routes/product'))
 
 
 const PORT = process.env.PORT || 5000

@@ -3,9 +3,9 @@ const router = express.Router()
 
 const Product = require('../models/Product')
 
-// @desc   Login/Landing page
-// @route  GET /
-router.get('/', function (req, res) {
+// @desc   Dashboard
+// @route  GET /dashboard
+router.get('/', (req, res) => {
     res.send('Welcome To Dashboard')
 })
 
