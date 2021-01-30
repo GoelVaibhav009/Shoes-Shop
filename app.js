@@ -43,7 +43,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Routes
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
-app.use('/dashboard', require('./routes/dashboard'))
 app.use('/admin', require('./routes/admin'))
 
 
