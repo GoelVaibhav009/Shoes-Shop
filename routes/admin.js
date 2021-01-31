@@ -3,6 +3,12 @@ const router = express.Router()
 
 const Product = require('../models/Product')
 
+// @desc   Admin Page
+// @route  GET /
+router.get('/', (req, res) => {
+  res.send('Welcome To Admin Page')
+})
+
 // @desc   Add Product Details
 // @route  Post /add
 router.post('/add', async (req, res) => {
