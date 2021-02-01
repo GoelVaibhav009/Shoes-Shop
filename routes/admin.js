@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
   try {
     const product = await Product.find()
 
-    res.send('Welcome to admin Page', product)
+    res.send('Welcome to admin Page')
 
   } catch (err) {
     console.error(err)
@@ -42,7 +42,7 @@ router.get('/:id', adminAccess, async (req, res) => {
     }
 
     if (!req.product.productAvailability) {
-      res.render('Stock Over')
+      res.send('Stock Over')
     } else {
       res.send('product', product)
     }

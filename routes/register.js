@@ -7,9 +7,13 @@ const passport = require('passport');
 const User = require('../models/User');
 const { ensureGuest } = require('../middlewares/auth')
 
+// @desc   Register page
+// @route  GET /register
+router.get('/', ensureGuest, (req, res) => res.send('Register Page'));
+
 // @desc   Register
-// @route  post /user/register
-router.post('/register', (req, res) => {
+// @route  post /register
+router.post('/', (req, res) => {
   // const user = await User.create(req.body)
   
   const { displayName,firstName,lastName, email, password, password2 } = req.body;
