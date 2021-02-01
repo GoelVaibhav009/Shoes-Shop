@@ -9,68 +9,50 @@ const { ensureGuest } = require('../middlewares/auth')
 
 // @desc   Register
 // @route  post /user/register
-router.post('/register', async(req, res) => {
-  await User.create(req.body)
-  const { displayName, email, password, password2 } = req.body;
-  let errors = [];
+router.post('/register', (req, res) => {
+  // const user = await User.create(req.body)
+  
+  const { displayName,firstName,lastName, email, password, password2 } = req.body;
 
   if (!displayName || !email || !password || !password2) {
-    errors.push({ msg: 'Please enter all fields' });
+    res.send('Fill all fields')
   }
 
   if (password != password2) {
-    errors.push({ msg: 'Passwords do not match' });
+    res.send('password incorrect')
   }
 
   if (password.length < 6) {
-    errors.push({ msg: 'Password must be at least 6 characters' });
+    res.send('password length should be greater than 6')
   }
 
-  if (errors.length > 0) {
-    res.send('register', {
-      errors,
-      displayName,
-      email,
-      password,
-      password2
-    });
-  } else {
-    User.findOne({ email: email }).then(user => {
-      if (user) {
-        errors.push({ msg: 'Email already exists' });
-        res.send('register', {
-          errors,
-          displayName,
-          email,
-          password,
-          password2
-        });
-      } else {
-        const newUser = new User({
-          displayName,
-          email,
-          password
-        });
+  User.findOne({ email: email }).then(user => {
+    if (user) {
+      res.send('Email already exists')
+    } else {
+      const newUser = new User({
+        displayName,
+        firstName,
+        lastName,
+        email,
+        password
+      });
 
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser
-              .save()
-              .then(user => {
-                req.flash(
-                  'success_msg',
-                  'You are now registered and can log in'
-                );
-                res.redirect('/');
-              })
-              .catch(err => console.log(err));
-          });
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser
+            .save()
+            .then(user => {
+              res.send('You are now registered and can log in');
+              res.redirect('/');
+            })
+            .catch(err => console.log(err));
         });
-      }
-    });
-  }
+      });
+    }
+  });
 });
 
 // @desc   callback
