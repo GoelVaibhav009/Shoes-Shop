@@ -4,23 +4,29 @@ const router = express.Router()
 const Product = require('../models/Product')
 const { adminAccess } = require('../middlewares/admin')
 
-// @desc    Show all Products
-// @route   GET /admin
-router.get('/', async (req, res) => {
+// @desc    Show edit page
+// @route   GET /admin/edit/:id
+router.get('/edit/:id', adminAccess, async (req, res) => {
   try {
-    const product = await Product.find()
-
-    res.send('Welcome to admin Page')
-
+    const product = await Product.findOne({
+      _id: req.params.id,
+    })
+    
+    if (!product) {
+      return res.send('error/404')
+    } else {
+      res.send(product)
+    }
+    
   } catch (err) {
     console.error(err)
+    return res.send('error/500')
   }
 })
 
-
 // @desc   Add Product
 // @route  Post /admin/add
-router.post('/add', adminAccess, async (req, res) => {
+router.post('/add',adminAccess, async (req, res) => {
     try {
     //   req.body.user = req.user.id //Validation for checking user is login or not
       await Product.create(req.body)
@@ -30,54 +36,12 @@ router.post('/add', adminAccess, async (req, res) => {
     }
 })
 
-
-// @desc    Search Product
-// @route   GET /admin/:id
-router.get('/:id', adminAccess, async (req, res) => {
-  try {
-    let product = await Product.findById(req.params.id)
-
-    if (!product) {
-      return res.send('error/404')
-    }
-
-    if (!req.product.productAvailability) {
-      res.send('Stock Over')
-    } else {
-      res.send('product', product)
-    }
-  } catch (err) {
-    console.error(err)
-    res.send('error/404')
-  }
-})
-
-// @desc    Show edit page
-// @route   GET /admin/edit/:id
-router.get('/edit/:id', adminAccess, async (req, res) => {
-  try {
-    const product = await Product.findOne({
-      _id: req.params.id,
-    })
-
-    if (!product) {
-      return res.send('error/404')
-    } else {
-      res.send(product)
-    }
-
-  } catch (err) {
-    console.error(err)
-    return res.send('error/500')
-  }
-})
-
 // @desc    Update Product
 // @route   PUT /admin/:id
 router.put('/:id', adminAccess, async (req, res) => {
   try {
     let product = await Product.findById(req.params.id)
-
+    
     if (!product) {
       return res.send('error/404')
     } else {

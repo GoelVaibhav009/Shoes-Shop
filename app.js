@@ -37,7 +37,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Auth Middleware
-const { adminAccess } = require('./middlewares/admin')
+// const { adminAccess } = require('./middlewares/admin')
 
 // Static folder
 app.use(express.static(path.join(__dirname, 'public'))) 
@@ -46,7 +46,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
 app.use('/register', require('./routes/register'))
-app.use('/admin',adminAccess, require('./routes/admin'))
+app.use('/admin', require('./routes/admin'))
+app.use('/products',require('./routes/product'))
 
 
 const PORT = process.env.PORT || 5000
